@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>CFBundleExecutable</key>        <string>ArmadilloBar</string>
+    <key>CFBundleIdentifier</key>        <string>com.punxcode.armadillobar</string>
+    <key>CFBundleName</key>              <string>Armadillo Bar</string>
+    <key>CFBundleIconFile</key>          <string>AppIcon</string>
+    <key>CFBundleVersion</key>           <string>1.0</string>
+    <key>CFBundleShortVersionString</key><string>1.0</string>
+    <key>LSUIElement</key>               <true/>
+    <key>LSMinimumSystemVersion</key>    <string>13.0</string>
+    <key>NSHighResolutionCapable</key>   <true/>
+    <key>LSApplicationCategoryType</key> <string>public.app-category.entertainment</string>
+    <key>NSHumanReadableCopyright</key>  <string>© 2026 Andrea Ricciotti / PunxCode. Fan project non-commerciale, non affiliato con Zerocalcare / Bao Publishing / Netflix / Movimenti Production. Codice MIT. Audio da YouTube e immagini dell'armadillo generate da AI (Higgsfield / Nano Banana) a solo scopo di omaggio. Nessuno scopo di lucro. DMCA / takedown: andrearicciotti1@gmail.com</string>
+</dict>
+</plist>

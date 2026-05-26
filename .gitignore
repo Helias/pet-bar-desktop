@@ -1,0 +1,15 @@
+# Built app
+ArmadilloBar.app/
+
+# Audio clips (copyright — bundle separately)
+assets/clips/
+
+# macOS
+.DS_Store
+**/.DS_Store
+
+# Xcode / Swift
+*.o
+*.d
+*.swp
+DerivedData/

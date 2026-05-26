@@ -1,0 +1,95 @@
+MIT License
+
+Copyright (c) 2026 Andrea Ricciotti / PunxCode
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+THIRD-PARTY CONTENT DISCLAIMER
+
+The MIT license above applies EXCLUSIVELY to the original source code
+(armadillo_bar.swift, build.sh, make_icon.swift, Info.plist, README.md, the
+armadillo icon and documentation) authored by Andrea Ricciotti / PunxCode.
+
+Audio clips (.mp3 / .mp4 / .m4a / .wav) referenced by or bundled with this
+project are NOT covered by this license. These clips are short excerpts from
+the works of Italian cartoonist Zerocalcare (Michele Rech), including but
+not limited to the Netflix animated series "Strappare lungo i bordi" (2021)
+and "Questo mondo non mi renderà cattivo" (2023), as well as graphic novels
+published by Bao Publishing. These works are the intellectual property of
+their respective rights holders, including but not limited to:
+
+  - Michele Rech (Zerocalcare)
+  - Bao Publishing S.r.l.
+  - Netflix, Inc.
+  - Movimenti Production S.r.l.
+  - Dogville S.r.l.
+  - The original collaborators, voice cast and production team
+
+The audio clips included in binary distributions (e.g. the DMG attached to
+GitHub Releases) were sourced from publicly available YouTube uploads by
+third parties. They are included solely for demonstration, tribute, satire,
+criticism, commentary and educational purposes, under the principles of
+fair use (17 U.S.C. § 107, USA) and fair dealing / copyright exceptions for
+criticism, review, caricature, parody and pastiche as defined by:
+
+  - EU Directive 2019/790, Article 17(7)
+  - Italian law: Art. 70, Legge 22 aprile 1941, n. 633 (LDA)
+
+NO COMMERCIAL USE. This project is a non-commercial, non-profit fan tribute.
+Its author receives no revenue, donations, advertising income, royalties,
+sponsorships or any other form of monetary or non-monetary consideration
+from its distribution or use.
+
+NO AFFILIATION. This project is an independent amateur work. It is not
+affiliated with, endorsed, sponsored, authorized by or in any way connected
+to Michele Rech (Zerocalcare), Bao Publishing, Netflix, Movimenti Production,
+Dogville or any other official rights holder of Zerocalcare's works. All
+trademarks, service marks, trade names, product names, logos, characters and
+dialogue referenced or reproduced belong to their respective owners.
+
+TAKEDOWN POLICY / DMCA CONTACT. If you are a rights holder and wish to
+have any content removed, contact the author directly:
+
+  Email:   andrearicciotti1@gmail.com   (preferred)
+  Issues:  https://github.com/andrearicciotti1/armadillo-bar/issues
+  Web:     https://punxcode.com
+
+Removal requests will be honored promptly and in good faith, within 24
+hours of receipt, without contestation.
+
+AI-GENERATED IMAGERY. The armadillo illustrations used as the app icon,
+menu bar icon and on-screen Clippy character are NOT original drawings by
+Zerocalcare. They are generated using AI image models (Higgsfield /
+Nano Banana) as a fan-made reinterpretation of the Armadillo character.
+AI-generated images that still depict a copyrighted character remain
+subject to the same fair-use / non-commercial / takedown conditions
+described above. The AI-generated illustrations themselves are released
+by the author under the same MIT license as the code, with the caveat
+that the underlying character belongs to its rights holders.
+
+USER RESPONSIBILITY. End users are responsible for ensuring their personal
+use complies with the copyright laws of their jurisdiction. This software
+is provided for personal, non-commercial, domestic use only. Users must not
+redistribute the bundled audio content for commercial purposes, broadcast
+it in monetized public contexts, or use it in any manner that infringes on
+the rights of the legitimate owners.
+
+THIS IS A FAN PROJECT. PLEASE DO NOT SUE A FAN.
