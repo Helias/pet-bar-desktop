@@ -148,6 +148,8 @@ Scaricando e usando Armadillo Bar riconosci che:
 
 App gemella per fan di Boris: 🐟 [Boris Bar](https://github.com/andrearicciotti1/boris-bar)
 
+Versione Windows: 🪟 [armadillo-bar-windows](https://github.com/andrearicciotti1/armadillo-bar-windows)
+
 ---
 
 > *"La domanda mi devasta."*
