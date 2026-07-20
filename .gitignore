@@ -1,15 +1,21 @@
-# Built app
-ArmadilloBar.app/
+# Audio clips are copyrighted excerpts — distributed only via releases, never in git
+# (same policy as upstream). Fetch them with scripts/fetch-clips.sh.
+themes/*/clips/
 
-# Audio clips (copyright — bundle separately)
-assets/clips/
+node_modules/
+dist/
+release/
+ui/dist/
+ui/.angular/
+*.log
 
 # macOS
 .DS_Store
 **/.DS_Store
 
-# Xcode / Swift
+# Xcode / Swift (macos-upstream reference build)
 *.o
 *.d
 *.swp
 DerivedData/
+ArmadilloBar.app/
