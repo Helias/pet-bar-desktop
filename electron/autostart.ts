@@ -2,7 +2,7 @@ import { app } from 'electron';
 import * as fs from 'fs';
 import * as path from 'path';
 
-const DESKTOP_FILE = 'armadillo-bar.desktop';
+const DESKTOP_FILE = 'pet-bar.desktop';
 
 function autostartDir(): string {
   const config = process.env.XDG_CONFIG_HOME || path.join(app.getPath('home'), '.config');
@@ -34,7 +34,7 @@ export function setAutostart(enabled: boolean): void {
         [
           '[Desktop Entry]',
           'Type=Application',
-          'Name=Armadillo Bar',
+          'Name=Pet Bar',
           `Exec=${execLine()}`,
           'X-GNOME-Autostart-enabled=true',
           'Comment=Soundboard + desktop pet (fan project)',

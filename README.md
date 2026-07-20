@@ -1,4 +1,4 @@
-# 🦔 Armadillo Bar (cross-platform)
+# 🦔 Pet Bar
 
 > ⚠️ **FAN PROJECT NON COMMERCIALE — NON-COMMERCIAL FAN PROJECT**  
 > Questo è un progetto amatoriale gratuito, open source, senza scopo di lucro né valore commerciale, creato da un fan delle opere di **Zerocalcare** (Michele Rech) per uso personale e di altri fan. Non è affiliato, sponsorizzato, approvato o in alcun modo connesso con Zerocalcare, Bao Publishing, Netflix, Movimenti Production, Dogville o con i collaboratori, doppiatori e detentori dei diritti delle sue opere. Tutti i marchi, titoli, personaggi, dialoghi e opere derivate sono proprietà dei rispettivi titolari.  
@@ -33,7 +33,7 @@ history is preserved in this repository.
 - 🎨 Theme picker (Armadillo / Boris), 🌍 UI language (system / Italiano / English, via
   [Transloco](https://jsverse.github.io/transloco/)), 🌗 appearance (system / light / dark)
 - 🚀 Start at login; single instance; CLI verbs against the running app:
-  `armadillo-bar --play N`, `armadillo-bar --toggle-pet`
+  `pet-bar --play N`, `pet-bar --toggle-pet`
 
 ## 📦 Install
 
@@ -65,11 +65,11 @@ npm run build:win          # NSIS  (run on Windows / wine)
 
 - **Wayland**: global shortcuts use X11 grabs and do **not** work under GNOME Wayland.
   Workarounds: use an X11 session, or bind GNOME custom shortcuts to the CLI verbs, e.g.
-  `armadillo-bar --play 1` … `--play 9` and `armadillo-bar --toggle-pet` (they reach the
+  `pet-bar --play 1` … `--play 9` and `pet-bar --toggle-pet` (they reach the
   running instance through the single-instance lock).
 - **Transparency**: the pet window needs a compositor. If you see a black rectangle behind
   the armadillo, try launching with `--enable-transparent-visuals --disable-gpu`.
-- Autostart uses `~/.config/autostart/armadillo-bar.desktop`.
+- Autostart uses `~/.config/autostart/pet-bar.desktop`.
 
 ## 🎨 Themes
 

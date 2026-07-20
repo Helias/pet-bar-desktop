@@ -1,5 +1,6 @@
-appId: io.github.helias.armadillo-bar
-productName: Armadillo Bar
+appId: io.github.helias.pet-bar-desktop
+productName: Pet Bar
+executableName: pet-bar
 directories:
   output: release
 files:
