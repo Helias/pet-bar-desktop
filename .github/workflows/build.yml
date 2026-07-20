@@ -1,0 +1,105 @@
+name: Build
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  # Clips are copyrighted excerpts kept out of git; fetch them once from the
+  # upstream release DMGs and share with every build job so release artifacts
+  # include them (same policy as upstream).
+  clips:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install extraction tools
+        run: sudo apt-get update && sudo apt-get install -y p7zip-full ffmpeg
+      - name: Fetch clips from upstream DMGs
+        run: ./scripts/fetch-clips.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: clips
+          path: themes/*/clips/**
+          if-no-files-found: error
+
+  build:
+    needs: clips
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            target: --linux
+          - os: macos-latest
+            target: --mac
+          - os: windows-latest
+            target: --win
+    runs-on: ${{ matrix.os }}
+    env:
+      # Unsigned builds: skip macOS code-signing discovery.
+      CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            ui/package-lock.json
+      - name: Install dependencies
+        shell: bash
+        run: |
+          npm ci
+          npm ci --prefix ui
+      - uses: actions/download-artifact@v4
+        with:
+          name: clips
+          path: themes
+      - name: Build UI and main process
+        shell: bash
+        run: |
+          npm run ui:build
+          npm run main:build
+      - name: Package
+        shell: bash
+        run: npx electron-builder ${{ matrix.target }} --publish never
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist-${{ matrix.os }}
+          path: |
+            release/*.AppImage
+            release/*.deb
+            release/*.dmg
+            release/*.exe
+          if-no-files-found: error
+
+  release-draft:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: dist-*
+          path: dist
+          merge-multiple: true
+      - name: Resolve tag
+        id: tag
+        run: |
+          if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
+            echo "tag=${GITHUB_REF_NAME}" >> "$GITHUB_OUTPUT"
+          else
+            echo "tag=v$(node -p "require('./package.json').version")" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: softprops/action-gh-release@v2
+        with:
+          draft: true
+          tag_name: ${{ steps.tag.outputs.tag }}
+          name: Pet Bar ${{ steps.tag.outputs.tag }}
+          files: dist/*
+          fail_on_unmatched_files: true
