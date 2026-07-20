@@ -1,4 +1,4 @@
-# 🦔 Armadillo Bar
+# 🦔 Armadillo Bar (cross-platform)
 
 > ⚠️ **FAN PROJECT NON COMMERCIALE — NON-COMMERCIAL FAN PROJECT**  
 > Questo è un progetto amatoriale gratuito, open source, senza scopo di lucro né valore commerciale, creato da un fan delle opere di **Zerocalcare** (Michele Rech) per uso personale e di altri fan. Non è affiliato, sponsorizzato, approvato o in alcun modo connesso con Zerocalcare, Bao Publishing, Netflix, Movimenti Production, Dogville o con i collaboratori, doppiatori e detentori dei diritti delle sue opere. Tutti i marchi, titoli, personaggi, dialoghi e opere derivate sono proprietà dei rispettivi titolari.  
@@ -6,150 +6,135 @@
 > I clip audio usati a scopo dimostrativo sono stati scaricati da YouTube (contenuti pubblicamente accessibili caricati da terzi) e usati qui esclusivamente per scopo illustrativo, satirico e di omaggio alle opere. **Nessun ricavo, donazione, pubblicità o monetizzazione è associato a questo progetto.**  
 > Se sei il titolare dei diritti e desideri la rimozione dei contenuti, scrivi a **andrearicciotti1@gmail.com** o apri una [issue](../../issues): i file verranno rimossi tempestivamente, entro 24 ore, senza discussione.
 
-## ⬇️ [Download ArmadilloBar-1.0.dmg](https://github.com/andrearicciotti1/armadillo-bar/releases/latest/download/ArmadilloBar-1.0.dmg)
+Cross-platform (Linux / macOS / Windows) port of two macOS menu-bar apps by
+[andrearicciotti1](https://github.com/andrearicciotti1), rebuilt with
+**Electron + TypeScript + Angular + TailwindCSS**:
 
----
+- [armadillo-bar](https://github.com/andrearicciotti1/armadillo-bar) — soundboard +
+  floating "Clippy" armadillo desktop pet (Zerocalcare fan project)
+- [boris-bar](https://github.com/andrearicciotti1/boris-bar) — soundboard for the Italian
+  TV series *Boris*
 
-Menu bar app macOS ispirata alle opere di **Zerocalcare** (*Strappare lungo i bordi*, *Questo mondo non mi renderà cattivo* e dintorni). Frasi iconiche romane a portata di shortcut globale, dalla menu bar del Mac.
-
-Ultra-leggera (~4 MB RAM idle), zero dipendenze, Swift nativo + Cocoa + AVFoundation.
-
----
+Each upstream app is a selectable **theme** (Settings → Tema). The original Swift sources
+live in [`macos-upstream/`](macos-upstream/) as a behavior reference; the upstream git
+history is preserved in this repository.
 
 ## ✨ Features
 
-- 🦔 Icona armadillo nella menu bar (invisibile nel Dock)
-- 🎧 9 clip audio con shortcut globali `⌥⌘1` … `⌥⌘9`
-- ➕ Carica i tuoi suoni personalizzati via file picker
-- ⏱ Durata max 30s per clip, toggle start/stop premendo di nuovo lo shortcut
-- 🦔 **Armadillo Clippy** — compare automaticamente ogni ~10-12 minuti con una frase iconica in un balloon fumetto disegnato a mano; si può evocare/nascondere manualmente con `⌥⌘0`
-- 💬 **Dialog "Chiedi all'Armadillo"** — clicca sull'armadillo, fai una domanda; risponde con un clip audio o un balloon
-- 🚀 Avvia al login (opzionale, togglable dal menu)
-- 🪶 Binario universal arm64+x86_64, ~100 KB, nessun Electron, nessun Python
+- 🎛 Tray icon with the full soundboard menu (labels in Italian, as upstream)
+- 🎧 9 built-in clips per theme with global shortcuts (`Ctrl+Alt+1…9`, on macOS `⌥⌘1…9`)
+- ➕ Custom sounds via file picker, per theme ("Aggiungi suono personalizzato…")
+- ⏱ 30 s max per clip; re-triggering a playing clip stops it
+- 🦔 **Armadillo Clippy** (armadillo theme) — transparent, draggable, always-on-top desktop
+  pet; appears every ~10–12 minutes with an iconic phrase in a hand-drawn speech bubble;
+  toggle manually with `Ctrl+Alt+0` (`⌥⌘0`); its mouth animates while audio plays
+- 💬 **"Chiedi all'armadillo"** — click the pet, ask a question, get an audio clip or a
+  bubble reply
+- 🎨 Theme picker (Armadillo / Boris), 🌍 UI language (system / Italiano / English, via
+  [Transloco](https://jsverse.github.io/transloco/)), 🌗 appearance (system / light / dark)
+- 🚀 Start at login; single instance; CLI verbs against the running app:
+  `armadillo-bar --play N`, `armadillo-bar --toggle-pet`
 
----
+## 📦 Install
 
-## 📦 Installazione
-
-### Opzione A — DMG (consigliata)
-
-1. Scarica `ArmadilloBar-1.0.dmg` dall'ultima [Release](../../releases/latest)
-2. Aprilo e trascina `ArmadilloBar.app` nella cartella `Applications`
-3. **Primo avvio — rimuovere la quarantena:** l'app non è firmata Apple Developer ID, quindi macOS la marca come "danneggiata". Apri Terminale e lancia una volta:
-   ```bash
-   xattr -cr /Applications/ArmadilloBar.app
-   ```
-   Poi apri l'app normalmente col doppio click.
-4. Clicca l'armadillo nella menu bar → scegli una frase.
-
-### Opzione B — Build dai sorgenti
+Prebuilt artifacts (AppImage, deb, dmg, NSIS) are produced by `npm run build` /
+`electron-builder` — see Releases when available. The audio clips are **not** in this git
+repository (same distribution policy as upstream, which ships them only inside its release
+DMGs); release artifacts include them, source builds fetch them:
 
 ```bash
-git clone https://github.com/andrearicciotti1/armadillo-bar.git
-cd armadillo-bar
-# Metti i tuoi file audio (mp3/wav/m4a) in assets/clips/
-./build.sh
-open ArmadilloBar.app
+# one-time: download the clips from the upstream release DMGs
+# requires: curl, 7z (p7zip-full), ffmpeg
+./scripts/fetch-clips.sh
 ```
 
-Richiede macOS 13 (Ventura) o superiore e Command Line Tools (`xcode-select --install`).  
-Compatibile con Ventura, Sonoma, Sequoia e Tahoe. Universal binary (Apple Silicon + Intel).
+### Build from source
+
+```bash
+npm install
+npm --prefix ui install
+./scripts/fetch-clips.sh   # audio clips (optional — app runs silent without them)
+npm run start              # build UI + main process and run the app
+npm run dev                # dev loop: ng serve + electron against localhost:4200
+npm run build              # Linux AppImage + deb into release/
+npm run build:mac          # dmg   (run on macOS)
+npm run build:win          # NSIS  (run on Windows / wine)
+```
+
+## 🐧 Linux notes
+
+- **Wayland**: global shortcuts use X11 grabs and do **not** work under GNOME Wayland.
+  Workarounds: use an X11 session, or bind GNOME custom shortcuts to the CLI verbs, e.g.
+  `armadillo-bar --play 1` … `--play 9` and `armadillo-bar --toggle-pet` (they reach the
+  running instance through the single-instance lock).
+- **Transparency**: the pet window needs a compositor. If you see a black rectangle behind
+  the armadillo, try launching with `--enable-transparent-visuals --disable-gpu`.
+- Autostart uses `~/.config/autostart/armadillo-bar.desktop`.
+
+## 🎨 Themes
+
+A theme is a folder under `themes/<id>/` with a `theme.json` manifest (clips, tray icon,
+about/disclaimer, optional pet with artwork + phrases). Drop a new folder with a valid
+manifest and it appears in Settings — no code changes needed.
 
 ---
 
-## 🎵 Aggiungere suoni personalizzati
+## Disclaimer — tema Armadillo (verbatim, dall'app upstream)
 
-Dal menu dell'app:
+> Armadillo Bar è un progetto amatoriale, gratuito, open source, senza scopo di lucro,
+> creato da un fan di Zerocalcare.
+>
+> NON AFFILIAZIONE. Non è un prodotto ufficiale. Non è affiliato, sponsorizzato o
+> approvato da Zerocalcare (Michele Rech), Bao Publishing, Netflix, Movimenti Production o
+> altri editori/produttori.
+>
+> ORIGINE AUDIO. I clip sono brevi estratti (pochi secondi) scaricati da YouTube, da video
+> pubblicamente accessibili caricati da terzi. Usati esclusivamente a scopo di omaggio,
+> critica, commento, satira, parodia e pastiche (art. 70 L. 633/1941, dir. UE 2019/790
+> art. 17(7)).
+>
+> NESSUN LUCRO. Nessuna vendita, donazione, pubblicità, tracking o monetizzazione di alcun
+> tipo.
+>
+> PROPRIETÀ. Tutti i marchi, personaggi, dialoghi, nomi e loghi sono proprietà dei
+> rispettivi titolari.
+>
+> GRAFICA AI. Le illustrazioni dell'armadillo sono generate da modelli di AI (Higgsfield /
+> Nano Banana) come reinterpretazione di fan; non sono disegni originali di Zerocalcare.
+>
+> TAKEDOWN / DMCA. I detentori di diritti possono richiedere la rimozione scrivendo a
+> andrearicciotti1@gmail.com o aprendo una issue su GitHub. Richieste legittime onorate
+> entro 24h.
 
-- **"Aggiungi suono personalizzato…"** → file picker → il suono viene copiato in  
-  `~/Library/Application Support/ArmadilloBar/custom/` e compare nel menu
-- **"Apri cartella suoni"** → per rinominare/cancellare manualmente
+## Disclaimer — tema Boris (verbatim, dall'app upstream)
 
-Formati supportati: `mp3`, `mp4`, `m4a`, `wav`, `aiff`, `caf`.  
-Nome file = label nel menu.
+> Boris Bar è un progetto amatoriale, gratuito, open source, senza scopo di lucro, creato
+> da un fan della serie TV italiana Boris.
+>
+> NON AFFILIAZIONE. Non è un prodotto ufficiale. Non è affiliato, sponsorizzato o
+> approvato da RAI, Wildside, Sky, Mediaset, Disney+ né dagli autori della serie
+> (Ciarrapico, Vendruscolo, Torre) o dagli interpreti.
+>
+> ORIGINE AUDIO. I clip sono brevi estratti (pochi secondi) scaricati da YouTube, da video
+> pubblicamente accessibili caricati da terzi. Usati esclusivamente a scopo di omaggio,
+> critica, commento, satira, parodia e pastiche (art. 70 L. 633/1941, dir. UE 2019/790
+> art. 17(7)).
+>
+> NESSUN LUCRO. Nessuna vendita, donazione, pubblicità, tracking o monetizzazione di alcun
+> tipo.
+>
+> PROPRIETÀ. Tutti i marchi, personaggi, dialoghi, nomi e loghi sono proprietà dei
+> rispettivi titolari.
+>
+> TAKEDOWN / DMCA. I detentori di diritti possono richiedere la rimozione scrivendo a
+> andrearicciotti1@gmail.com o aprendo una issue su GitHub. Richieste legittime onorate
+> entro 24h.
 
----
+Vedi anche [`DISCLAIMER.txt`](DISCLAIMER.txt) (armadillo) e
+[`themes/boris/DISCLAIMER.txt`](themes/boris/DISCLAIMER.txt) (boris).
 
-## ⌨️ Shortcut globali predefiniti
+## License
 
-| Shortcut | Clip |
-|----------|------|
-| `⌥⌘1`    | Cintura nera |
-| `⌥⌘2`    | Dietro le quinte |
-| `⌥⌘3`    | Il silenzio prima… |
-| `⌥⌘4`    | Le cose succedono |
-| `⌥⌘5`    | Soggetto consapevole |
-| `⌥⌘6`    | Vola basso |
-| `⌥⌘7`    | Ti raggiungo col coso |
-| `⌥⌘8`    | Annamo a pija er gelato |
-| `⌥⌘9`    | Zona d'ombra |
-
-Funzionano ovunque, anche senza aprire il menu. Ripremere lo stesso shortcut ferma la riproduzione.
-
----
-
-## 🛠 Stack tecnico
-
-- **Swift** (multi-file: `armadillo_bar.swift`, `ArmadilloClippyWindow.swift`, `ClippyBubblePanel.swift`, `ArmadilloAskWindow.swift`)
-- **Cocoa** — NSStatusItem, NSMenu
-- **AVFoundation** — AVAudioPlayer
-- **ServiceManagement** — SMAppService per login item (macOS 13+)
-- **Carbon.HIToolbox** — RegisterEventHotKey per shortcut globali (zero permessi accessibility)
-- Binario universal arm64 + x86_64 pinned `minos=13.0` (Ventura → Tahoe + futuro, Apple Silicon + Intel)
-
----
-
-## 📜 Licenza e disclaimer
-
-### Codice sorgente
-Licenza [MIT](LICENSE) — libero uso, modifica, redistribuzione per il **codice**.
-
-### Contenuti audio (estratti dalle opere di Zerocalcare)
-- **Non sono mia proprietà.** Tutti i diritti su dialoghi, personaggi (incluso l'Armadillo, alter ego della coscienza di Zero), opere originali appartengono a **Michele Rech (Zerocalcare)**, **Bao Publishing**, **Netflix**, **Movimenti Production**, **Dogville** e ai relativi collaboratori.
-- **Provenienza:** i clip audio di default sono stati **scaricati da YouTube**, estratti da video di terzi pubblicamente accessibili.
-- **Uso:** esclusivamente illustrativo, satirico, di omaggio (*tribute*), educativo e di commento critico.
-- **Fair use / eccezioni copyright:** il progetto si appoggia ai principi di *fair use* (USA) / *fair dealing* e alle eccezioni per critica, recensione, caricatura, parodia e pastiche previste dalla direttiva UE 2019/790 art. 17(7) e dall'art. 70 L. 633/1941 (legge italiana sul diritto d'autore).
-
-### Nessuno scopo di lucro
-- ❌ Nessuna vendita, nessuna donazione, nessun annuncio pubblicitario, nessuna promozione a pagamento
-- ❌ Nessun paywall, nessun abbonamento, nessuna in-app purchase
-- ❌ Nessuna telemetria, nessuna analitica, nessun tracciamento utenti
-- ✅ Gratis, open source, auto-contenuto, offline
-
-### Grafica generata con AI
-Le illustrazioni dell'armadillo usate da questa app (icona menu bar, icona Dock, finestra Clippy) **non sono opera originale dell'autore Zerocalcare**. Sono immagini generate tramite modelli di intelligenza artificiale (Higgsfield / Nano Banana) come libera reinterpretazione/omaggio del personaggio dell'Armadillo. Non riproducono direttamente disegni dell'autore. Anche le immagini AI rimangono comunque ispirate a un personaggio coperto da diritto d'autore: valgono le stesse condizioni di fair use / non-commerciale / takedown descritte sopra.
-
-### Nessuna affiliazione
-Armadillo Bar **non è** un prodotto ufficiale. **Non è** affiliato, sponsorizzato, approvato o in alcun modo connesso con Zerocalcare, Bao Publishing, Netflix, Movimenti Production, Dogville, doppiatori, collaboratori o detentori dei diritti delle sue opere. Ogni riferimento è puramente di omaggio tra fan.
-
-### Takedown policy / contatto DMCA
-Se sei un detentore di diritti e vuoi la rimozione dei contenuti:
-
-📧 **Email diretta (preferita): [andrearicciotti1@gmail.com](mailto:andrearicciotti1@gmail.com)**  
-🐛 Oppure apri una [issue](../../issues) su GitHub  
-🌐 Oppure contatta via [punxcode.com](https://punxcode.com)
-
-Per richieste DMCA / takedown valide (detentore dei diritti verificabile + identificazione del contenuto da rimuovere) i file saranno rimossi **entro 24 ore dalla ricezione**, in buona fede, senza contestazione legale.
-
-L'autore si impegna a rispettare ogni richiesta legittima di takedown.
-
-### Uso da parte dei fan
-Scaricando e usando Armadillo Bar riconosci che:
-- Lo fai per uso strettamente personale e domestico
-- Non redistribuirai i clip audio a fini commerciali
-- Non userai l'app in contesti pubblici monetizzati
-- L'autore non fornisce garanzie legali sul contenuto audio
-
----
-
-## 🤘 Autore
-
-[PunxCode](https://punxcode.com) — Andrea Ricciotti
-
-App gemella per fan di Boris: 🐟 [Boris Bar](https://github.com/andrearicciotti1/boris-bar)
-
-Versione Windows: 🪟 [armadillo-bar-windows](https://github.com/andrearicciotti1/armadillo-bar-windows)
-
----
-
-> *"La domanda mi devasta."*
+Code: [MIT](LICENSE) — © upstream Andrea Ricciotti / PunxCode, port © contributors of this
+repository. Artwork and audio: see the disclaimers above; all rights belong to their
+respective owners.
