@@ -1,0 +1,22 @@
+{
+  "id": "boris",
+  "name": "Boris Bar",
+  "trayIcon": { "default": "fish.png" },
+  "clips": [
+    { "label": "Fai uno sforzo", "file": "fai uno sforzo" },
+    { "label": "Tutti basiti", "file": "Tutti basiti" },
+    { "label": "A cazzo di cane", "file": "a cazzo di cane" },
+    { "label": "F4", "file": "F4" },
+    { "label": "Fiano Romano", "file": "Fiano Romano" },
+    { "label": "Però sei molto italiano", "file": "Però sei molto italiano" },
+    { "label": "Thank you for being so not italian", "file": "Thank you for being so not italian" },
+    { "label": "Io la mollo questa serie", "file": "Io la mollo questa serie" },
+    { "label": "Vuoi una pompa", "file": "Vuoi una pompa" }
+  ],
+  "about": {
+    "title": "Boris Bar — Fan project non commerciale",
+    "text": "Versione 1.0 · © 2026 Andrea Ricciotti / PunxCode\n\nBoris Bar è un progetto amatoriale, gratuito, open source, senza scopo di lucro, creato da un fan della serie TV italiana Boris.\n\nNON AFFILIAZIONE. Non è un prodotto ufficiale. Non è affiliato, sponsorizzato o approvato da RAI, Wildside, Sky, Mediaset, Disney+ né dagli autori della serie (Ciarrapico, Vendruscolo, Torre) o dagli interpreti.\n\nORIGINE AUDIO. I clip sono brevi estratti (pochi secondi) scaricati da YouTube, da video pubblicamente accessibili caricati da terzi. Usati esclusivamente a scopo di omaggio, critica, commento, satira, parodia e pastiche (art. 70 L. 633/1941, dir. UE 2019/790 art. 17(7)).\n\nNESSUN LUCRO. Nessuna vendita, donazione, pubblicità, tracking o monetizzazione di alcun tipo.\n\nPROPRIETÀ. Tutti i marchi, personaggi, dialoghi, nomi e loghi sono proprietà dei rispettivi titolari.\n\nTAKEDOWN / DMCA. I detentori di diritti possono richiedere la rimozione scrivendo a andrearicciotti1@gmail.com o aprendo una issue su GitHub. Richieste legittime onorate entro 24h.\n\nCodice: licenza MIT.",
+    "githubUrl": "https://github.com/andrearicciotti1/boris-bar",
+    "licenseUrl": "https://github.com/andrearicciotti1/boris-bar/blob/main/LICENSE"
+  }
+}

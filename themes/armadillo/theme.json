@@ -1,0 +1,53 @@
+{
+  "id": "armadillo",
+  "name": "Armadillo Bar",
+  "trayIcon": { "default": "armadillo.png", "macTemplate": "armadillo-menubar.png" },
+  "clips": [
+    { "label": "Cintura nera", "file": "cintura nera" },
+    { "label": "Dietro le quinte", "file": "dietro le quinte" },
+    { "label": "Il silenzio prima…", "file": "il silenzio prima" },
+    { "label": "Le cose succedono", "file": "le cose succedono" },
+    { "label": "Soggetto consapevole", "file": "soggetto consapevole" },
+    { "label": "Vola basso", "file": "vola basso" },
+    { "label": "Ti raggiungo col coso", "file": "Ti raggiungo col coso" },
+    { "label": "Annamo a pija er gelato", "file": "Ndamose a pija ngelato" },
+    { "label": "Zona d'ombra", "file": "zona d'ombra" }
+  ],
+  "about": {
+    "title": "Armadillo Bar — Fan project non commerciale",
+    "text": "Versione 1.0 · © 2026 Andrea Ricciotti / PunxCode\n\nArmadillo Bar è un progetto amatoriale, gratuito, open source, senza scopo di lucro, creato da un fan di Zerocalcare.\n\nNON AFFILIAZIONE. Non è un prodotto ufficiale. Non è affiliato, sponsorizzato o approvato da Zerocalcare (Michele Rech), Bao Publishing, Netflix, Movimenti Production o altri editori/produttori.\n\nORIGINE AUDIO. I clip sono brevi estratti (pochi secondi) scaricati da YouTube, da video pubblicamente accessibili caricati da terzi. Usati esclusivamente a scopo di omaggio, critica, commento, satira, parodia e pastiche (art. 70 L. 633/1941, dir. UE 2019/790 art. 17(7)).\n\nNESSUN LUCRO. Nessuna vendita, donazione, pubblicità, tracking o monetizzazione di alcun tipo.\n\nPROPRIETÀ. Tutti i marchi, personaggi, dialoghi, nomi e loghi sono proprietà dei rispettivi titolari.\n\nGRAFICA AI. Le illustrazioni dell'armadillo sono generate da modelli di AI (Higgsfield / Nano Banana) come reinterpretazione di fan; non sono disegni originali di Zerocalcare.\n\nTAKEDOWN / DMCA. I detentori di diritti possono richiedere la rimozione scrivendo a andrearicciotti1@gmail.com o aprendo una issue su GitHub. Richieste legittime onorate entro 24h.\n\nCodice: licenza MIT.",
+    "githubUrl": "https://github.com/andrearicciotti1/armadillo-bar",
+    "licenseUrl": "https://github.com/andrearicciotti1/armadillo-bar/blob/main/LICENSE"
+  },
+  "pet": {
+    "closed": "armadillo.png",
+    "open": "armadillo-open.png",
+    "bubbleDown": "bubble.png",
+    "bubbleUp": "bubble-up.png",
+    "fontFile": "Bangers-Regular.ttf",
+    "petName": "Armadillo",
+    "phrases": [
+      "E chiudi la bocca, che te entrano le mosche.",
+      "Concentrati su oggi.",
+      "Se su 8000 film non te ne va bene manco uno, forse sei te che non vai bene.",
+      "Vola basso. Se poi esce una merda, so cazzi per tutti, pure per me.",
+      "La monnezza che fai te è meglio?",
+      "Vedi solo un coglione che da 20 anni sguscia come un'anguilla senza mai pijasse due spicci di responsabilità.",
+      "È una guerra di posizione, Calcare. Devi reggere botta.",
+      "Perché sei lo scemo del villaggio, fratellì.",
+      "Tiè, magnate pure due quintali de merda.",
+      "C'è sempre una cosa peggio.",
+      "Metti cose finte che te fanno sembrà un grafico vero. Magari qualcuno ce casca.",
+      "Non te fanno più lavorà.",
+      "Me sa che è peggio annà a lavorà in cantiere. Così, a occhio.",
+      "Il punto debole del capitalismo è che è boccalone.",
+      "Sta bono!"
+    ],
+    "ask": {
+      "answerClip": "bello spunto",
+      "fallbackBubbleText": "Ma se non lo sai te io che cazzo ne posso sapé?",
+      "title": "Chiedi all'armadillo",
+      "promptLabel": "Cosa vuoi chiedere all'armadillo?"
+    }
+  }
+}
