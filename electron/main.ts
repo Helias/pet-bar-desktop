@@ -20,6 +20,8 @@ import {
   isPetVisible,
   persistPosition,
   petHideAnimationDone,
+  rendererSetIgnoreMouse,
+  setBubbleRegion,
   setOnVisibilityChanged,
   showBubble,
   togglePet,
@@ -164,9 +166,12 @@ function wireIpc(): void {
   });
   ipcMain.on('pet:drag', (_e, dx: number, dy: number) => dragBy(dx, dy));
   ipcMain.on('pet:drag-end', () => persistPosition());
-  ipcMain.on('pet:set-ignore-mouse', (_e, ignore: boolean) => {
-    getPetWindow()?.setIgnoreMouseEvents(ignore, { forward: true });
-  });
+  ipcMain.on('pet:set-ignore-mouse', (_e, ignore: boolean) => rendererSetIgnoreMouse(ignore));
+  ipcMain.on(
+    'bubble:region',
+    (_e, region: { x: number; y: number; width: number; height: number } | null) =>
+      setBubbleRegion(region),
+  );
   ipcMain.on('bubble:clicked', () => {
     getPetWindow()?.webContents.send('bubble:hide');
   });

@@ -71,6 +71,48 @@ function initialPosition(): { x: number; y: number } {
   };
 }
 
+// --- click-through management ------------------------------------------
+// Empty transparent areas must never swallow clicks. On macOS/Windows the
+// window is created click-through and `forward: true` keeps mouse moves
+// flowing to the renderer, whose pointerenter/leave handlers toggle
+// interactivity. Neither mechanism exists on Linux (`forward` is
+// darwin/win32-only, and cursor polling is out because
+// screen.getCursorScreenPoint() only updates from events the app receives).
+// Instead Linux uses the X11 input shape: input lands only inside the pet
+// and bubble rects, everything else passes through at the server level.
+// X11's implicit grab on button press keeps drag events flowing even when
+// the cursor briefly leaves the shape mid-drag.
+
+const useInputShape = process.platform === 'linux';
+
+let bubbleRegion: { x: number; y: number; width: number; height: number } | null = null;
+
+function applyInputShape(): void {
+  if (!win) return;
+  const rects = [{ x: PET_X, y: PET_Y, width: PET_W, height: PET_H }];
+  if (bubbleRegion) rects.push(bubbleRegion);
+  win.setShape(rects);
+}
+
+export function rendererSetIgnoreMouse(ignore: boolean): void {
+  if (useInputShape) return; // the input shape already routes clicks
+  win?.setIgnoreMouseEvents(ignore, { forward: true });
+}
+
+export function setBubbleRegion(
+  region: { x: number; y: number; width: number; height: number } | null,
+): void {
+  bubbleRegion = region
+    ? {
+        x: Math.round(region.x),
+        y: Math.round(region.y),
+        width: Math.round(region.width),
+        height: Math.round(region.height),
+      }
+    : null;
+  if (useInputShape) applyInputShape();
+}
+
 export function createPetWindow(loadUrl: string, preloadPath: string): BrowserWindow {
   const pos = initialPosition();
   win = new BrowserWindow({
@@ -96,9 +138,12 @@ export function createPetWindow(loadUrl: string, preloadPath: string): BrowserWi
   });
   win.setAlwaysOnTop(true, 'floating');
   win.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
-  // Empty transparent areas must never swallow clicks; the renderer flips
-  // this off when the pointer enters the pet or bubble element.
-  win.setIgnoreMouseEvents(true, { forward: true });
+  if (useInputShape) {
+    applyInputShape();
+  } else {
+    // The renderer flips this off when the pointer enters the pet or bubble.
+    win.setIgnoreMouseEvents(true, { forward: true });
+  }
   win.loadURL(loadUrl);
   return win;
 }
@@ -161,6 +206,8 @@ export function showPet(manual: boolean): void {
   petVisible = true;
   if (hideFallbackTimer) clearTimeout(hideFallbackTimer);
   win.showInactive();
+  // Some X servers drop the input shape when a window is remapped.
+  if (useInputShape) applyInputShape();
   win.webContents.send('pet:show');
   // Bubble appears just after the fade-in lands (upstream: 0.35 s).
   setTimeout(() => {

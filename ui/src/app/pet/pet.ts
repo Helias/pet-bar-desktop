@@ -184,6 +184,7 @@ export class Pet implements OnInit, OnDestroy {
     const top =
       p.style === 'down' ? PET_Y - BUBBLE_H + BUBBLE_OVERLAP : PET_Y + PET_H - BUBBLE_OVERLAP;
     this.bubble.set({ ...p, left, top });
+    this.api.bubbleRegion({ x: left, y: top, width: BUBBLE_W, height: BUBBLE_H });
     if (this.bubbleTimer) clearTimeout(this.bubbleTimer);
     this.bubbleTimer = setTimeout(
       () => this.zone.run(() => this.dismissBubble()),
@@ -194,6 +195,7 @@ export class Pet implements OnInit, OnDestroy {
   dismissBubble(): void {
     if (this.bubbleTimer) clearTimeout(this.bubbleTimer);
     this.bubbleTimer = null;
+    if (this.bubble()) this.api.bubbleRegion(null);
     this.bubble.set(null);
   }
 

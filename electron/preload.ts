@@ -23,6 +23,8 @@ const api = {
   petDragBy: (dx: number, dy: number) => ipcRenderer.send('pet:drag', dx, dy),
   petDragEnd: () => ipcRenderer.send('pet:drag-end'),
   setIgnoreMouse: (ignore: boolean) => ipcRenderer.send('pet:set-ignore-mouse', ignore),
+  bubbleRegion: (region: { x: number; y: number; width: number; height: number } | null) =>
+    ipcRenderer.send('bubble:region', region),
   bubbleClicked: () => ipcRenderer.send('bubble:clicked'),
 
   // --- ask dialog ---

@@ -86,6 +86,7 @@ export interface ArmadilloApi {
   petDragBy(dx: number, dy: number): void;
   petDragEnd(): void;
   setIgnoreMouse(ignore: boolean): void;
+  bubbleRegion(region: { x: number; y: number; width: number; height: number } | null): void;
   bubbleClicked(): void;
 
   getAskInit(): Promise<AskInit>;
