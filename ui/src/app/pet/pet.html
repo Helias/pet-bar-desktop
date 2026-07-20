@@ -1,0 +1,46 @@
+@if (theme(); as t) {
+  @if (t.manifest.pet; as pet) {
+    <img
+      class="pet"
+      [class.pet-shown]="petShown()"
+      [src]="assetUrl(mouthOpen() && pet.open ? pet.open : pet.closed)"
+      [style.left.px]="PET_X"
+      [style.top.px]="PET_Y"
+      [style.width.px]="PET_W"
+      [style.height.px]="PET_H"
+      draggable="false"
+      alt=""
+      (pointerenter)="onEnterInteractive()"
+      (pointerleave)="onLeaveInteractive()"
+      (pointerdown)="onPetPointerDown($event)"
+      (pointermove)="onPetPointerMove($event)"
+      (pointerup)="onPetPointerUp($event)"
+    />
+
+    @if (bubble(); as b) {
+      <div
+        class="bubble"
+        [style.left.px]="b.left"
+        [style.top.px]="b.top"
+        [style.width.px]="BUBBLE_W"
+        [style.height.px]="BUBBLE_H"
+        [style.background-image]="'url(&quot;' + bubbleImage() + '&quot;)'"
+        (pointerenter)="onEnterInteractive()"
+        (pointerleave)="onLeaveInteractive()"
+        (click)="onBubbleClick()"
+      >
+        <div
+          class="bubble-body"
+          [style.padding-bottom.px]="b.style === 'down' ? tailH + 10 : 10"
+          [style.padding-top.px]="b.style === 'up' ? tailH + 10 : 10"
+        >
+          <span
+            class="bubble-text"
+            [style.transform]="b.style === 'down' ? 'translateY(10px)' : 'translateY(-10px)'"
+            >{{ b.text }}</span
+          >
+        </div>
+      </div>
+    }
+  }
+}

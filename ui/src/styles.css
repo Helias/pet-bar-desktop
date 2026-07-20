@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+/* The pet route needs a fully transparent window; opaque routes paint their
+   own background on a root container. */
+html,
+body {
+  margin: 0;
+  background: transparent;
+  overflow: hidden;
+}

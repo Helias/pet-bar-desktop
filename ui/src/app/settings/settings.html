@@ -1,0 +1,98 @@
+@if (state(); as s) {
+  <div class="min-h-screen bg-neutral-100 p-6 text-neutral-900 dark:bg-neutral-900 dark:text-neutral-100">
+    <h1 class="mb-4 text-xl font-semibold">{{ 'settings.title' | transloco }}</h1>
+
+    <section class="mb-6">
+      <h2 class="mb-2 text-sm font-medium uppercase tracking-wide text-neutral-500 dark:text-neutral-400">
+        {{ 'settings.theme' | transloco }}
+      </h2>
+      <div class="flex flex-col gap-2">
+        @for (t of s.themes; track t.id) {
+          <button
+            class="flex items-center justify-between rounded-lg border px-4 py-3 text-left transition"
+            [class]="t.id === s.themeId ? selectedCls : unselectedCls"
+            (click)="selectTheme(t.id)"
+          >
+            <span class="font-medium">{{ t.name }}</span>
+            @if (t.id === s.themeId) {
+              <span class="text-sm text-amber-700 dark:text-amber-400">{{ 'settings.active' | transloco }}</span>
+            }
+          </button>
+        }
+      </div>
+    </section>
+
+    <section class="mb-6">
+      <h2 class="mb-2 text-sm font-medium uppercase tracking-wide text-neutral-500 dark:text-neutral-400">
+        {{ 'settings.language' | transloco }}
+      </h2>
+      <div class="flex gap-2">
+        @for (opt of langOptions; track opt.value) {
+          <button
+            class="rounded-lg border px-4 py-2 transition"
+            [class]="opt.value === s.language ? selectedCls : unselectedCls"
+            (click)="selectLanguage(opt.value)"
+          >
+            {{ opt.labelKey ? (opt.labelKey | transloco) : opt.label }}
+          </button>
+        }
+      </div>
+    </section>
+
+    <section class="mb-6">
+      <h2 class="mb-2 text-sm font-medium uppercase tracking-wide text-neutral-500 dark:text-neutral-400">
+        {{ 'settings.appearance' | transloco }}
+      </h2>
+      <div class="flex gap-2">
+        @for (opt of appearanceOptions; track opt.value) {
+          <button
+            class="rounded-lg border px-4 py-2 transition"
+            [class]="opt.value === s.appearance ? selectedCls : unselectedCls"
+            (click)="selectAppearance(opt.value)"
+          >
+            {{ opt.labelKey | transloco }}
+          </button>
+        }
+      </div>
+    </section>
+
+    <section class="mb-6">
+      <h2 class="mb-2 text-sm font-medium uppercase tracking-wide text-neutral-500 dark:text-neutral-400">
+        {{ 'settings.system' | transloco }}
+      </h2>
+      <label class="flex cursor-pointer items-center gap-3 rounded-lg border border-neutral-300 bg-white px-4 py-3 dark:border-neutral-700 dark:bg-neutral-800">
+        <input
+          type="checkbox"
+          class="h-4 w-4 accent-amber-700"
+          [checked]="s.autostart"
+          (change)="toggleAutostart()"
+        />
+        <span>{{ 'settings.autostart' | transloco }}</span>
+      </label>
+    </section>
+
+    <section>
+      <h2 class="mb-2 text-sm font-medium uppercase tracking-wide text-neutral-500 dark:text-neutral-400">
+        {{ 'settings.aboutSection' | transloco }}
+      </h2>
+      <div class="rounded-lg border border-neutral-300 bg-white p-4 dark:border-neutral-700 dark:bg-neutral-800">
+        <h3 class="mb-2 font-semibold">{{ s.about.title }}</h3>
+        <p class="mb-4 whitespace-pre-line text-sm leading-relaxed text-neutral-700 dark:text-neutral-300">{{ s.about.text }}</p>
+        <div class="flex gap-2">
+          <button
+            class="rounded border border-neutral-300 bg-white px-3 py-1.5 text-sm hover:bg-neutral-200 dark:border-neutral-600 dark:bg-neutral-700 dark:hover:bg-neutral-600"
+            (click)="open(s.about.githubUrl)"
+          >
+            {{ 'settings.openGithub' | transloco }}
+          </button>
+          <button
+            class="rounded border border-neutral-300 bg-white px-3 py-1.5 text-sm hover:bg-neutral-200 dark:border-neutral-600 dark:bg-neutral-700 dark:hover:bg-neutral-600"
+            (click)="open(s.about.licenseUrl)"
+          >
+            {{ 'settings.openLicense' | transloco }}
+          </button>
+        </div>
+      </div>
+    </section>
+  </div>
+}

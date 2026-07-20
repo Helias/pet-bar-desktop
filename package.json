@@ -1,0 +1,30 @@
+{
+  "name": "armadillo-bar",
+  "productName": "Armadillo Bar",
+  "version": "1.0.0",
+  "description": "Cross-platform desktop-pet soundboard (fan project). Themes: Armadillo (Zerocalcare) and Boris.",
+  "license": "MIT",
+  "author": "Helias <stefanoborzi32@gmail.com>",
+  "homepage": "https://github.com/Helias/armadillo-bar-linux",
+  "main": "dist/main/main.js",
+  "scripts": {
+    "ui:serve": "npm --prefix ui run start",
+    "ui:build": "npm --prefix ui run build",
+    "main:build": "node esbuild.mjs",
+    "main:watch": "node esbuild.mjs --watch",
+    "dev": "concurrently -k -n ng,electron \"npm run ui:serve\" \"wait-on http://localhost:4200 && npm run main:build && cross-env ELECTRON_START_URL=http://localhost:4200 electron .\"",
+    "start": "npm run ui:build && npm run main:build && electron .",
+    "build": "npm run ui:build && npm run main:build && electron-builder --linux",
+    "build:win": "npm run ui:build && npm run main:build && electron-builder --win",
+    "build:mac": "npm run ui:build && npm run main:build && electron-builder --mac"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2",
+    "cross-env": "^7.0.3",
+    "electron": "^37.2.3",
+    "electron-builder": "^26.0.12",
+    "esbuild": "^0.25.6",
+    "typescript": "^5.8.3",
+    "wait-on": "^8.0.3"
+  }
+}

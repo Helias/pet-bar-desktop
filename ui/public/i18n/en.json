@@ -1,0 +1,39 @@
+{
+  "tray": {
+    "customSection": "Custom sounds",
+    "addCustom": "Add custom sound…",
+    "openFolder": "Open sounds folder",
+    "showPet": "Show {{name}}",
+    "hidePet": "Hide {{name}}",
+    "autostart": "Start at login",
+    "settings": "Settings…",
+    "about": "About & disclaimer…",
+    "quit": "Quit"
+  },
+  "dialogs": {
+    "chooseAudio": "Choose an audio file",
+    "ok": "OK",
+    "openGithub": "Open GitHub",
+    "openLicense": "Open license"
+  },
+  "settings": {
+    "title": "Settings",
+    "theme": "Theme",
+    "active": "active",
+    "system": "System",
+    "language": "Language",
+    "langSystem": "System",
+    "appearance": "Appearance",
+    "appearanceSystem": "System",
+    "appearanceLight": "Light",
+    "appearanceDark": "Dark",
+    "autostart": "Start at login",
+    "aboutSection": "About & disclaimer",
+    "openGithub": "Open GitHub",
+    "openLicense": "Open license"
+  },
+  "ask": {
+    "cancel": "Cancel",
+    "submit": "Ask"
+  }
+}
