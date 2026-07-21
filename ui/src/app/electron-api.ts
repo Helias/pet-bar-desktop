@@ -45,6 +45,7 @@ export interface RendererTheme {
 export interface PetInit {
   theme: RendererTheme;
   petVisible: boolean;
+  petScale: number;
 }
 
 export interface AskInit {
@@ -65,6 +66,7 @@ export interface SettingsState {
   language: LangPref;
   effectiveLang: 'it' | 'en';
   appearance: AppearancePref;
+  petScale: number;
 }
 
 export interface BubblePayload {
@@ -81,6 +83,7 @@ export interface ArmadilloApi {
   onBubbleShow(cb: (p: BubblePayload) => void): () => void;
   onBubbleHide(cb: () => void): () => void;
   onThemeChanged(cb: (t: RendererTheme) => void): () => void;
+  onPetScaleChanged(cb: (scale: number) => void): () => void;
   petHidden(): void;
   petClicked(): void;
   petDragBy(dx: number, dy: number): void;
@@ -98,6 +101,7 @@ export interface ArmadilloApi {
 
   getSettingsState(): Promise<SettingsState>;
   setTheme(id: string): Promise<{ themeId: string; about: ThemeAbout }>;
+  setPetScale(scale: number): Promise<number>;
   setAutostart(enabled: boolean): Promise<boolean>;
   setLanguage(pref: LangPref): Promise<'it' | 'en'>;
   setAppearance(pref: AppearancePref): Promise<AppearancePref>;
@@ -117,6 +121,7 @@ export const BUBBLE_TAIL_FRAC = 0.11;
 export const SNOUT_FRAC = 0.65;
 export const TAIL_TIP_FRAC = 0.14;
 export const BUBBLE_OVERLAP = 30;
+export const WIN_MARGIN = 8;
 export const WIN_W = 404;
 export const PET_X = 6;
 export const PET_Y = 196;
@@ -124,3 +129,33 @@ export const MAX_CLIP_SECONDS = 30;
 export const TALK_INTERVAL_MS = 125;
 export const BUBBLE_VISIBLE_SECONDS = 15;
 export const DRAG_THRESHOLD_PX = 5;
+export const PET_SCALE_MIN = 0.5;
+export const PET_SCALE_MAX = 2;
+
+export interface PetGeometry {
+  petX: number;
+  petY: number;
+  petW: number;
+  petH: number;
+  bubbleW: number;
+  bubbleH: number;
+  bubbleOverlap: number;
+  winW: number;
+  winH: number;
+}
+
+/** Scaled geometry — must match petGeometry in electron/types.ts exactly:
+ *  the main process sizes the window and X11 input shape with its copy. */
+export function petGeometry(scale: number): PetGeometry {
+  const s = Math.min(PET_SCALE_MAX, Math.max(PET_SCALE_MIN, Number.isFinite(scale) ? scale : 1));
+  const petW = Math.round(PET_W * s);
+  const petH = Math.round(PET_H * s);
+  const bubbleW = Math.round(BUBBLE_W * s);
+  const bubbleH = Math.round(BUBBLE_H * s);
+  const bubbleOverlap = Math.round(BUBBLE_OVERLAP * s);
+  const petX = Math.round(PET_X * s);
+  const petY = WIN_MARGIN + bubbleH - bubbleOverlap;
+  const winW = Math.round(WIN_W * s);
+  const winH = petY + petH + bubbleH - bubbleOverlap + WIN_MARGIN;
+  return { petX, petY, petW, petH, bubbleW, bubbleH, bubbleOverlap, winW, winH };
+}

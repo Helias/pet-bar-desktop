@@ -6,6 +6,8 @@ export interface Settings {
   themeId: string;
   petPosition?: { x: number; y: number };
   petManuallyShown: boolean;
+  /** Pet size multiplier, 0.5–2 (see clampPetScale in types.ts). */
+  petScale: number;
   language: 'system' | 'it' | 'en';
   appearance: 'system' | 'light' | 'dark';
 }
@@ -13,6 +15,7 @@ export interface Settings {
 const DEFAULTS: Settings = {
   themeId: 'armadillo',
   petManuallyShown: false,
+  petScale: 0.5,
   language: 'system',
   appearance: 'system',
 };

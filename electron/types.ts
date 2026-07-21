@@ -64,6 +64,43 @@ export const PET_Y = WIN_MARGIN + BUBBLE_H - BUBBLE_OVERLAP; // 196
 export const WIN_W = 404;
 export const WIN_H = PET_Y + PET_H + BUBBLE_H - BUBBLE_OVERLAP + WIN_MARGIN; // 712
 
+export const PET_SCALE_MIN = 0.5;
+export const PET_SCALE_MAX = 2;
+
+export function clampPetScale(scale: unknown): number {
+  const n = typeof scale === 'number' && Number.isFinite(scale) ? scale : 1;
+  return Math.min(PET_SCALE_MAX, Math.max(PET_SCALE_MIN, n));
+}
+
+export interface PetGeometry {
+  petX: number;
+  petY: number;
+  petW: number;
+  petH: number;
+  bubbleW: number;
+  bubbleH: number;
+  bubbleOverlap: number;
+  winW: number;
+  winH: number;
+}
+
+/** All pet-window geometry scaled by the user's pet-size setting. Must stay
+ *  in sync with the copy in ui/src/app/electron-api.ts: main and renderer
+ *  compute it independently and the values must match exactly. */
+export function petGeometry(scale: number): PetGeometry {
+  const s = clampPetScale(scale);
+  const petW = Math.round(PET_W * s);
+  const petH = Math.round(PET_H * s);
+  const bubbleW = Math.round(BUBBLE_W * s);
+  const bubbleH = Math.round(BUBBLE_H * s);
+  const bubbleOverlap = Math.round(BUBBLE_OVERLAP * s);
+  const petX = Math.round(PET_X * s);
+  const petY = WIN_MARGIN + bubbleH - bubbleOverlap;
+  const winW = Math.round(WIN_W * s);
+  const winH = petY + petH + bubbleH - bubbleOverlap + WIN_MARGIN;
+  return { petX, petY, petW, petH, bubbleW, bubbleH, bubbleOverlap, winW, winH };
+}
+
 export const MAX_CLIP_SECONDS = 30;
 export const TALK_INTERVAL_MS = 125; // ~8 Hz mouth toggle
 export const BUBBLE_VISIBLE_SECONDS = 15;

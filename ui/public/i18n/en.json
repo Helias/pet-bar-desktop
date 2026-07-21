@@ -27,6 +27,7 @@
     "appearanceSystem": "System",
     "appearanceLight": "Light",
     "appearanceDark": "Dark",
+    "petSize": "Pet size",
     "autostart": "Start at login",
     "aboutSection": "About & disclaimer",
     "openGithub": "Open GitHub",

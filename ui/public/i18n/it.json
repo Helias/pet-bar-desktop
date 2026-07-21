@@ -27,6 +27,7 @@
     "appearanceSystem": "Sistema",
     "appearanceLight": "Chiaro",
     "appearanceDark": "Scuro",
+    "petSize": "Dimensione del pet",
     "autostart": "Avvia al login",
     "aboutSection": "Informazioni e disclaimer",
     "openGithub": "Apri GitHub",

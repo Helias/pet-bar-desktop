@@ -1,24 +1,17 @@
-import { Component, NgZone, OnDestroy, OnInit, signal } from '@angular/core';
+import { Component, NgZone, OnDestroy, OnInit, computed, signal } from '@angular/core';
 import {
   armadilloApi,
   ArmadilloApi,
   BubblePayload,
   RendererTheme,
-  BUBBLE_H,
-  BUBBLE_OVERLAP,
   BUBBLE_TAIL_FRAC,
   BUBBLE_VISIBLE_SECONDS,
-  BUBBLE_W,
   DRAG_THRESHOLD_PX,
   MAX_CLIP_SECONDS,
-  PET_H,
-  PET_W,
-  PET_X,
-  PET_Y,
+  petGeometry,
   SNOUT_FRAC,
   TAIL_TIP_FRAC,
   TALK_INTERVAL_MS,
-  WIN_W,
 } from '../electron-api';
 
 /** Pet + speech bubble + the app's audio host, all in one transparent window.
@@ -38,13 +31,9 @@ export class Pet implements OnInit, OnDestroy {
   mouthOpen = signal(false);
   bubble = signal<(BubblePayload & { left: number; top: number }) | null>(null);
 
-  readonly PET_W = PET_W;
-  readonly PET_H = PET_H;
-  readonly PET_X = PET_X;
-  readonly PET_Y = PET_Y;
-  readonly BUBBLE_W = BUBBLE_W;
-  readonly BUBBLE_H = BUBBLE_H;
-  readonly tailH = Math.round(BUBBLE_H * BUBBLE_TAIL_FRAC);
+  scale = signal(1);
+  geo = computed(() => petGeometry(this.scale()));
+  tailH = computed(() => Math.round(this.geo().bubbleH * BUBBLE_TAIL_FRAC));
 
   private audio = new Audio();
   private currentToken: string | null = null;
@@ -64,6 +53,7 @@ export class Pet implements OnInit, OnDestroy {
   async ngOnInit(): Promise<void> {
     const init = await this.api.getPetInit();
     this.zone.run(() => {
+      this.scale.set(init.petScale);
       this.applyTheme(init.theme);
       this.petShown.set(init.petVisible);
     });
@@ -80,6 +70,13 @@ export class Pet implements OnInit, OnDestroy {
       this.api.onBubbleShow(z((p) => this.showBubble(p))),
       this.api.onBubbleHide(z(() => this.dismissBubble())),
       this.api.onThemeChanged(z((t) => this.applyTheme(t))),
+      this.api.onPetScaleChanged(
+        z((s) => {
+          // The bubble was laid out for the old geometry; drop it.
+          this.dismissBubble();
+          this.scale.set(s);
+        }),
+      ),
     );
 
     this.audio.addEventListener('ended', () => this.zone.run(() => this.onPlaybackEnded()));
@@ -178,13 +175,16 @@ export class Pet implements OnInit, OnDestroy {
   // --- bubble ---
 
   private showBubble(p: BubblePayload): void {
-    const snoutX = PET_X + PET_W * SNOUT_FRAC;
-    let left = snoutX - BUBBLE_W * TAIL_TIP_FRAC;
-    left = Math.min(Math.max(left, 4), WIN_W - BUBBLE_W - 4);
+    const g = this.geo();
+    const snoutX = g.petX + g.petW * SNOUT_FRAC;
+    let left = snoutX - g.bubbleW * TAIL_TIP_FRAC;
+    left = Math.min(Math.max(left, 4), g.winW - g.bubbleW - 4);
     const top =
-      p.style === 'down' ? PET_Y - BUBBLE_H + BUBBLE_OVERLAP : PET_Y + PET_H - BUBBLE_OVERLAP;
+      p.style === 'down'
+        ? g.petY - g.bubbleH + g.bubbleOverlap
+        : g.petY + g.petH - g.bubbleOverlap;
     this.bubble.set({ ...p, left, top });
-    this.api.bubbleRegion({ x: left, y: top, width: BUBBLE_W, height: BUBBLE_H });
+    this.api.bubbleRegion({ x: left, y: top, width: g.bubbleW, height: g.bubbleH });
     if (this.bubbleTimer) clearTimeout(this.bubbleTimer);
     this.bubbleTimer = setTimeout(
       () => this.zone.run(() => this.dismissBubble()),

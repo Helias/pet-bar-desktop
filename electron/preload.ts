@@ -18,6 +18,7 @@ const api = {
   onBubbleShow: (cb: Listener<{ text: string; style: 'down' | 'up' }>) => on('bubble:show', cb),
   onBubbleHide: (cb: Listener<void>) => on('bubble:hide', cb),
   onThemeChanged: (cb: Listener<unknown>) => on('theme:changed', cb),
+  onPetScaleChanged: (cb: Listener<number>) => on('pet:scale-changed', cb),
   petHidden: () => ipcRenderer.send('pet:hidden'),
   petClicked: () => ipcRenderer.send('pet:clicked'),
   petDragBy: (dx: number, dy: number) => ipcRenderer.send('pet:drag', dx, dy),
@@ -41,6 +42,7 @@ const api = {
   setLanguage: (pref: string) => ipcRenderer.invoke('settings:set-language', pref),
   setAppearance: (pref: string) => ipcRenderer.invoke('settings:set-appearance', pref),
   setTheme: (id: string) => ipcRenderer.invoke('settings:set-theme', id),
+  setPetScale: (scale: number) => ipcRenderer.invoke('settings:set-pet-scale', scale),
   setAutostart: (enabled: boolean) => ipcRenderer.invoke('settings:set-autostart', enabled),
   openExternal: (url: string) => ipcRenderer.send('open-external', url),
 };

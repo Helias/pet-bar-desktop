@@ -11,6 +11,8 @@ export class Settings implements OnInit {
   private api: ArmadilloApi = armadilloApi();
 
   state = signal<SettingsState | null>(null);
+  /** Slider position in percent; tracks the drag before the value is committed. */
+  petScalePct = signal(100);
 
   readonly langOptions: { value: LangPref; labelKey?: string; label?: string }[] = [
     { value: 'system', labelKey: 'settings.langSystem' },
@@ -32,7 +34,9 @@ export class Settings implements OnInit {
 
   async ngOnInit(): Promise<void> {
     document.title = this.transloco.translate('settings.title');
-    this.state.set(await this.api.getSettingsState());
+    const s = await this.api.getSettingsState();
+    this.state.set(s);
+    this.petScalePct.set(Math.round(s.petScale * 100));
   }
 
   async selectLanguage(pref: LangPref): Promise<void> {
@@ -54,6 +58,20 @@ export class Settings implements OnInit {
     if (!s || s.appearance === pref) return;
     await this.api.setAppearance(pref);
     this.state.set({ ...s, appearance: pref });
+  }
+
+  onPetScaleInput(value: string): void {
+    const pct = parseInt(value, 10);
+    if (Number.isFinite(pct)) this.petScalePct.set(pct);
+  }
+
+  async commitPetScale(value: string): Promise<void> {
+    const s = this.state();
+    const pct = parseInt(value, 10);
+    if (!s || !Number.isFinite(pct)) return;
+    const applied = await this.api.setPetScale(pct / 100);
+    this.petScalePct.set(Math.round(applied * 100));
+    this.state.set({ ...s, petScale: applied });
   }
 
   async toggleAutostart(): Promise<void> {

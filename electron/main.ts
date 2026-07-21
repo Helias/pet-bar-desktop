@@ -1,6 +1,6 @@
 import { app, ipcMain, nativeTheme, shell, BrowserWindow } from 'electron';
 import * as path from 'path';
-import { ASK_MAX_CHARS, RendererTheme, ThemeManifest } from './types';
+import { ASK_MAX_CHARS, clampPetScale, RendererTheme, ThemeManifest } from './types';
 import {
   activeTheme,
   listThemes,
@@ -23,6 +23,7 @@ import {
   rendererSetIgnoreMouse,
   setBubbleRegion,
   setOnVisibilityChanged,
+  setPetScale,
   showBubble,
   togglePet,
 } from './pet';
@@ -157,6 +158,7 @@ function wireIpc(): void {
   ipcMain.handle('pet:init', () => ({
     theme: rendererTheme(),
     petVisible: isPetVisible(),
+    petScale: clampPetScale(getSettings().petScale),
   }));
 
   ipcMain.on('pet:hidden', () => petHideAnimationDone());
@@ -205,6 +207,7 @@ function wireIpc(): void {
     language: getSettings().language,
     effectiveLang: currentLang(),
     appearance: getSettings().appearance,
+    petScale: clampPetScale(getSettings().petScale),
   }));
   ipcMain.handle('settings:set-theme', (_e, id: string) => {
     switchTheme(id);
@@ -225,6 +228,8 @@ function wireIpc(): void {
     nativeTheme.themeSource = pref;
     return pref;
   });
+
+  ipcMain.handle('settings:set-pet-scale', (_e, scale: number) => setPetScale(scale));
 
   ipcMain.handle('settings:set-autostart', (_e, enabled: boolean) => {
     setAutostart(enabled);

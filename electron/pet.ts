@@ -1,21 +1,17 @@
 import { BrowserWindow, screen } from 'electron';
 import {
   ThemeManifest,
-  WIN_W,
-  WIN_H,
-  PET_X,
-  PET_Y,
-  PET_W,
-  PET_H,
-  BUBBLE_H,
   BUBBLE_VISIBLE_SECONDS,
   PHRASE_MIN_SECONDS,
   PHRASE_MAX_SECONDS,
   PHRASE_ANTI_SPAM_SECONDS,
+  clampPetScale,
+  petGeometry,
 } from './types';
 import { getSettings, updateSettings } from './settings';
 
 let win: BrowserWindow | null = null;
+let geom = petGeometry(1);
 let currentTheme: ThemeManifest | null = null;
 let petVisible = false;
 let manuallyShown = false;
@@ -43,7 +39,7 @@ export function isManuallyShown(): boolean {
 }
 
 function petScreenRect(pos: { x: number; y: number }) {
-  return { x: pos.x + PET_X, y: pos.y + PET_Y, width: PET_W, height: PET_H };
+  return { x: pos.x + geom.petX, y: pos.y + geom.petY, width: geom.petW, height: geom.petH };
 }
 
 /** Restore saved window position; fall back to "pet slightly above the centre
@@ -64,10 +60,10 @@ function initialPosition(): { x: number; y: number } {
     if (onScreen) return saved;
   }
   const wa = screen.getPrimaryDisplay().workArea;
-  const petTop = wa.y + Math.round((wa.height - PET_H) / 2) - 60;
+  const petTop = wa.y + Math.round((wa.height - geom.petH) / 2) - 60;
   return {
-    x: wa.x + Math.round(wa.width / 2) - Math.round(WIN_W / 2),
-    y: petTop - PET_Y,
+    x: wa.x + Math.round(wa.width / 2) - Math.round(geom.winW / 2),
+    y: petTop - geom.petY,
   };
 }
 
@@ -89,7 +85,7 @@ let bubbleRegion: { x: number; y: number; width: number; height: number } | null
 
 function applyInputShape(): void {
   if (!win) return;
-  const rects = [{ x: PET_X, y: PET_Y, width: PET_W, height: PET_H }];
+  const rects = [{ x: geom.petX, y: geom.petY, width: geom.petW, height: geom.petH }];
   if (bubbleRegion) rects.push(bubbleRegion);
   win.setShape(rects);
 }
@@ -114,12 +110,13 @@ export function setBubbleRegion(
 }
 
 export function createPetWindow(loadUrl: string, preloadPath: string): BrowserWindow {
+  geom = petGeometry(clampPetScale(getSettings().petScale));
   const pos = initialPosition();
   win = new BrowserWindow({
     x: pos.x,
     y: pos.y,
-    width: WIN_W,
-    height: WIN_H,
+    width: geom.winW,
+    height: geom.winH,
     frame: false,
     transparent: true,
     resizable: false,
@@ -272,9 +269,9 @@ export function showRandomBubble(): void {
 export function showBubble(text: string): void {
   if (!win || !petVisible) return;
   const [x, y] = win.getPosition();
-  const display = screen.getDisplayMatching({ x, y, width: WIN_W, height: WIN_H });
-  const petTopAbs = y + PET_Y;
-  const style = petTopAbs - display.workArea.y >= BUBBLE_H + 4 ? 'down' : 'up';
+  const display = screen.getDisplayMatching({ x, y, width: geom.winW, height: geom.winH });
+  const petTopAbs = y + geom.petY;
+  const style = petTopAbs - display.workArea.y >= geom.bubbleH + 4 ? 'down' : 'up';
   win.webContents.send('bubble:show', { text, style });
 }
 
@@ -288,4 +285,29 @@ export function persistPosition(): void {
   if (!win) return;
   const [x, y] = win.getPosition();
   updateSettings({ petPosition: { x, y } });
+}
+
+export function setPetScale(scale: number): number {
+  const s = clampPetScale(scale);
+  updateSettings({ petScale: s });
+  const old = geom;
+  geom = petGeometry(s);
+  if (!win) return s;
+  // The renderer dismisses its bubble on scale change; drop the stale region
+  // now so the input shape never exposes a bubble-sized dead zone.
+  bubbleRegion = null;
+  // Resize around the pet's feet so it stays put on screen.
+  const [x, y] = win.getPosition();
+  const footX = x + old.petX + old.petW / 2;
+  const footY = y + old.petY + old.petH;
+  const nx = Math.round(footX - geom.petX - geom.petW / 2);
+  const ny = Math.round(footY - geom.petY - geom.petH);
+  // setBounds is clamped to the current size while resizable is false.
+  win.setResizable(true);
+  win.setBounds({ x: nx, y: ny, width: geom.winW, height: geom.winH });
+  win.setResizable(false);
+  if (useInputShape) applyInputShape();
+  updateSettings({ petPosition: { x: nx, y: ny } });
+  win.webContents.send('pet:scale-changed', s);
+  return s;
 }
